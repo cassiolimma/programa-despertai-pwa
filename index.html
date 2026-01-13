@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
@@ -48,10 +48,86 @@
     </script>
     <link rel="manifest" href="manifest.json">
     <script>
-    if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('sw.js')
-        .then(() => console.log("PWA Registrado!"));
-    }
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('sw.js')
+            .then(() => console.log("PWA Registrado!"));
+        }
+    </script>
+</body>
+</html> -->
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Programa Despertai</title>
+    <!-- Manifest movido para head -->
+    <link rel="manifest" href="manifest.json">
+    <!-- Meta para PWA mobile -->
+    <meta name="theme-color" content="#2ecc71">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <style>
+        body { font-family: sans-serif; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; margin: 0; background: #121212; color: white; }
+        .card { background: #1e1e1e; padding: 2rem; border-radius: 20px; text-align: center; box-shadow: 0 4px 15px rgba(0,0,0,0.5); }
+        button { padding: 15px 40px; font-size: 1.2rem; cursor: pointer; border: none; border-radius: 50px; transition: 0.3s; font-weight: bold; }
+        .play { background: #2ecc71; color: white; }
+        .pause { background: #e74c3c; color: white; display: none; }
+        #status { font-size: 1.1rem; margin: 1rem 0; color: #bdc3c7; }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h1>Programa Despertai</h1>
+        <p id="status">Aguardando...</p>
+        
+        <button id="btnPlay" class="play" onclick="toggleAudio()">PLAY</button>
+        <button id="btnPause" class="pause" onclick="toggleAudio()">PAUSE</button>
+    </div>
+    <script>
+        // Substitua pela URL do seu stream
+        const streamUrl = "https://radio.saopaulo01.com.br/8020/stream";
+        const audio = new Audio(streamUrl);
+        const btnPlay = document.getElementById('btnPlay');
+        const btnPause = document.getElementById('btnPause');
+        const statusText = document.getElementById('status');
+        
+        function toggleAudio() {
+            if (audio.paused) {
+                audio.play().catch(e => {
+                    console.error('Erro ao tocar:', e);
+                    statusText.innerText = "Erro no stream (verifique conexão)";
+                });
+                btnPlay.style.display = 'none';
+                btnPause.style.display = 'inline-block';
+                statusText.innerText = "NO AR...";
+            } else {
+                audio.pause();
+                // Opcional: recarregar o áudio para não dar delay ao voltar
+                audio.src = streamUrl;
+                btnPlay.style.display = 'inline-block';
+                btnPause.style.display = 'none';
+                statusText.innerText = "Aguardando...";
+            }
+        }
+        
+        // Listener para erros no áudio (ex: stream offline)
+        audio.addEventListener('error', () => {
+            statusText.innerText = "Stream offline";
+            btnPlay.style.display = 'inline-block';
+            btnPause.style.display = 'none';
+        });
+        
+        audio.addEventListener('loadstart', () => {
+            statusText.innerText = "Conectando...";
+        });
+    </script>
+    <script>
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('sw.js')
+            .then(() => console.log("PWA Registrado!"))
+            .catch(e => console.error('Erro no SW:', e));
+        }
     </script>
 </body>
 </html>

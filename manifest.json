@@ -1,18 +1,19 @@
 {
-  "name": "Rádio Clube FM 104,9",
+  "name": "Programa Despertai - Web Rádio",
   "short_name": "Despertai",
-  "start_url": "index.html",
+  "description": "Ouça o Programa Despertai ao vivo na web",
+  "start_url": "/",
   "display": "standalone",
   "background_color": "#121212",
   "theme_color": "#2ecc71",
   "icons": [
     {
-      "src": "📻",
+      "src": "icon_192x192.png",
       "sizes": "192x192",
       "type": "image/png"
     },
     {
-      "src": "👀",
+      "src": "icon_512x512.png",
       "sizes": "512x512",
       "type": "image/png"
     }
